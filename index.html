@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Purevia Water Order</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #dff5f5, #f7ffff);
+  margin:0;
+  padding:0;
+}
+
+/* ================= HEADER ================= */
+.main-header {
+  background: linear-gradient(135deg, #0a7f7f, #0fb9b1);
+  color: white;
+  padding: 70px 20px 60px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+.main-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 70%);
+  animation: floatBg 12s linear infinite;
+}
+@keyframes floatBg {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(50px, 30px); }
+  100% { transform: translate(0, 0); }
+}
+.header-overlay { position: relative; z-index: 2; }
+.brand-name { margin: 0; font-size: 72px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.brand-tagline { margin: 12px 0 18px 0; font-size: 22px; font-weight: 600; letter-spacing: 1.5px; }
+.brand-contact { margin: 0; font-size: 16px; font-weight: 500; opacity: 0.95; }
+
+/* ================= QUICK ADD ================= */
+.quick-add { max-width:1000px; margin:40px auto; padding:20px; }
+.quick-add h2 { text-align:center; color:#0a7f7f; margin-bottom:20px; }
+.product-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:20px; }
+.product-card { background:white; padding:25px 20px; border-radius:14px; box-shadow:0 10px 25px rgba(0,0,0,0.12); text-align:center; border-top:6px solid #0a7f7f; transition: transform 0.2s; }
+.product-card:hover { transform: translateY(-5px); }
+.product-card h3 { margin-top:0; color:#0a7f7f; font-size:22px; }
+.product-card p { margin:8px 0; font-size:15px; }
+.product-card .price { font-weight:bold; font-size:17px; color:#086666; }
+.product-card button { margin-top:15px; width:100%; padding:12px; background:#0a7f7f; color:white; border:none; border-radius:8px; cursor:pointer; font-size:16px; }
+.product-card button:hover { background:#086666; }
+
+/* ================= FORM ================= */
+.container { max-width:650px; margin:50px auto; background:white; padding:35px 30px; border-radius:14px; box-shadow:0 15px 35px rgba(0,0,0,0.18); }
+.container h2 { text-align:center; color:#0a7f7f; margin-bottom:25px; }
+label { display:block; margin-top:15px; font-weight:bold; }
+input, textarea { width:100%; padding:12px; margin-top:6px; border-radius:8px; border:1px solid #ccc; font-size:15px; }
+input:focus, textarea:focus { border-color:#0a7f7f; box-shadow:0 0 5px rgba(10,127,127,0.3); }
+
+/* ================= SUMMARY ================= */
+.summary { background:linear-gradient(135deg, #e0f7f7, #c0f0f0); border-left:6px solid #0a7f7f; border-radius:12px; padding:22px; margin-top:30px; }
+.summary h3 { margin-top:0; color:#0a7f7f; }
+.summary p { margin:10px 0; font-size:16px; }
+.summary span { font-weight:bold; color:#086666; }
+
+/* ================= BUTTON ================= */
+button.main-btn { margin-top:30px; padding:14px; background:#0a7f7f; color:white; border:none; border-radius:10px; cursor:pointer; font-size:17px; width:100%; }
+button.main-btn:hover { background:#086666; }
+
+/* ================= FOOTER ================= */
+footer { background:#f2f9f9; padding:25px; text-align:center; margin-top:50px; border-top:1px solid #ddd; color:#0a7f7f; }
+
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="main-header">
+  <div class="header-overlay">
+    <h1 class="brand-name">Purevia</h1>
+    <p class="brand-tagline">Pure • Safe • Natural Drinking Water</p>
+    <p class="brand-contact">📞 +91 6280943728 &nbsp; | &nbsp; ✉️ support@purevia.com</p>
+  </div>
+</header>
+
+<!-- ================= QUICK ADD ================= -->
+<div class="quick-add">
+  <h2>Quick Add Full Sets</h2>
+  <div class="product-grid">
+    <div class="product-card">
+      <h3>200 ml Bottle</h3>
+      <p>Packing: Set of 24</p>
+      <p class="price">Set Price: ₹240</p>
+      <button onclick="quickAdd('200')">Add Set</button>
+    </div>
+    <div class="product-card">
+      <h3>1 L Bottle</h3>
+      <p>Packing: Set of 12</p>
+      <p class="price">Set Price: ₹240</p>
+      <button onclick="quickAdd('1000')">Add Set</button>
+    </div>
+    <div class="product-card">
+      <h3>2 L Bottle</h3>
+      <p>Packing: Set of 12</p>
+      <p class="price">Set Price: ₹360</p>
+      <button onclick="quickAdd('2000')">Add Set</button>
+    </div>
+    <div class="product-card">
+      <h3>5 L Bottle</h3>
+      <p>Packing: Single Bottle</p>
+      <p class="price">Price: ₹80</p>
+      <button onclick="quickAdd('5000')">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ORDER FORM ================= -->
+<div class="container">
+  <h2>Order Summary</h2>
+
+  <label>Your Name</label>
+  <input type="text" id="name" placeholder="Enter your full name">
+
+  <label>Selected Size</label>
+  <input type="text" id="bottleSize" readonly>
+
+  <label>Mobile Number</label>
+  <input type="tel" id="mobile" placeholder="10-digit mobile number" maxlength="10">
+
+  <label>Delivery Address</label>
+  <textarea id="address" placeholder="Enter full address"></textarea>
+
+  <div class="summary">
+    <h3>Order Details</h3>
+    <p>👤 Name: <span id="summaryName">-</span></p>
+    <p>📏 Size: <span id="summarySize">-</span></p>
+    <p>📦 Total Bottles: <span id="summaryQty">0</span></p>
+    <p>💰 Total Price: <span id="summaryPrice">₹0</span></p>
+  </div>
+
+  <button class="main-btn" onclick="placeOrder()">Place Order</button>
+</div>
+
+<footer>
+  <p>Purevia Water Pvt. Ltd., Chamkaur Sahib, Ropar, Punjab, India</p>
+</footer>
+
+<script>
+let totalQuantity = 0;
+let totalPrice = 0;
+let currentSize = "";
+
+function quickAdd(size) {
+  // Reset if changing bottle type
+  if(currentSize !== size) {
+    currentSize = size;
+    totalQuantity = 0;
+    totalPrice = 0;
+  }
+
+  let bottlesPerSet = 0;
+  let pricePerSet = 0;
+  let sizeText = "";
+
+  if(size === "200") { bottlesPerSet = 24; pricePerSet = 240; sizeText = "200 ml"; }
+  else if(size === "1000") { bottlesPerSet = 12; pricePerSet = 240; sizeText = "1 L"; }
+  else if(size === "2000") { bottlesPerSet = 12; pricePerSet = 360; sizeText = "2 L"; }
+  else if(size === "5000") { bottlesPerSet = 1; pricePerSet = 80; sizeText = "5 L"; }
+
+  totalQuantity += bottlesPerSet;
+  totalPrice += pricePerSet;
+
+  document.getElementById("bottleSize").value = sizeText;
+  updateSummary();
+
+  document.querySelector(".container").scrollIntoView({ behavior: "smooth" });
+}
+
+function updateSummary() {
+  const name = document.getElementById("name").value.trim();
+  document.getElementById("summaryName").innerText = name || "-";
+  document.getElementById("summarySize").innerText = document.getElementById("bottleSize").value || "-";
+  document.getElementById("summaryQty").innerText = totalQuantity;
+  document.getElementById("summaryPrice").innerText = "₹" + totalPrice;
+}
+
+function placeOrder() {
+  const name = document.getElementById("name").value.trim();
+  const mobile = document.getElementById("mobile").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  if(!name || !mobile || !address || totalQuantity === 0){
+    alert("Please fill all details and add bottles.");
+    return;
+  }
+
+  fetch("/order", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      name: name,
+      mobile: "+91" + mobile,
+      size: document.getElementById("bottleSize").value,
+      totalBottles: totalQuantity,
+      totalPrice: totalPrice,
+      delivery: "normal",
+      address: address,
+      notes: ""
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      alert("✅ Order placed & email sent successfully!");
+      totalQuantity = 0;
+      totalPrice = 0;
+      currentSize = "";
+      document.getElementById("name").value = "";
+      document.getElementById("mobile").value = "";
+      document.getElementById("address").value = "";
+      document.getElementById("bottleSize").value = "";
+      updateSummary();
+    } else alert("❌ Error sending email: " + (data.error || "Unknown error"));
+  })
+  .catch(err => alert("❌ Error: " + err));
+}
+
+document.getElementById("name").addEventListener("input", updateSummary);
+</script>
+</body>
+</html>
