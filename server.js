@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 
   // Serve HTML
   if(req.url === "/" && req.method === "GET"){
-    const filePath = path.join(__dirname, "index.html");
+    const filePath = path.join(__dirname, "ss.html");
     fs.readFile(filePath, (err, data) => {
       if(err){
         res.writeHead(500, {"Content-Type":"text/plain"});
