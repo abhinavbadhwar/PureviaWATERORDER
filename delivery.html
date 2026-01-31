@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Confirmation</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #e9fafa; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+  .container { background:white; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.2); width:90%; max-width:400px; }
+  h2 { text-align:center; color:#0a6ebd; }
+  input { width:100%; padding:10px; margin:10px 0; border-radius:5px; border:1px solid #ccc; font-size:16px; }
+  button { width:100%; padding:10px; background:#0a6ebd; color:white; border:none; border-radius:5px; font-size:16px; cursor:pointer; margin-top:5px; }
+  button:hover { background:#0955a1; }
+  .msg { text-align:center; margin-top:10px; color:#0a6ebd; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Confirm Delivery</h2>
+
+  <!-- Button to notify admin & send delivery OTP -->
+  <button onclick="notifyArrival()">🚚 I'm at the location</button>
+
+  <!-- Inputs for OTP verification -->
+  <input type="email" id="email" placeholder="Customer Email" required>
+  <input type="text" id="otp" placeholder="OTP" required disabled>
+  <input type="text" id="name" placeholder="Customer Name (optional)">
+  <button onclick="verifyDelivery()">Confirm Delivery</button>
+
+  <div class="msg" id="msg"></div>
+</div>
+
+<script>
+// ===== DELIVERY BOY ARRIVAL NOTIFICATION =====
+async function notifyArrival() {
+  const email = prompt("Enter customer email:");
+  const name = prompt("Enter customer name:");
+
+  if(!email || !name){
+    alert("Email and Name are required");
+    return;
+  }
+
+  try {
+    const res = await fetch("/notify-delivery-start", { // correct server route
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ email, name })
+    });
+
+    const data = await res.json();
+    if(data.success){
+      alert("✅ Arrival notification sent to admin & OTP sent to customer!");
+      document.getElementById('otp').disabled = false; // enable OTP input
+      document.getElementById('email').value = email;    // fill email field
+      document.getElementById('name').value = name;      // fill name field
+      document.getElementById('msg').innerText = "OTP sent to customer, waiting for verification...";
+    } else {
+      alert("❌ Error: " + data.message);
+    }
+  } catch(err){
+    alert("❌ Could not send notification");
+  }
+}
+
+// ===== VERIFY DELIVERY OTP =====
+async function verifyDelivery(){
+  const email = document.getElementById('email').value;
+  const otp = document.getElementById('otp').value;
+  const name = document.getElementById('name').value || "Customer"; // fallback
+
+  if(!email || !otp) {
+    document.getElementById('msg').innerText = "Email and OTP are required";
+    return;
+  }
+
+  try {
+    const res = await fetch('/verify-delivery-otp', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, otp, name })
+    });
+
+    const data = await res.json();
+    if(data.success){
+      document.getElementById('msg').innerText = "✅ Delivery confirmed successfully!";
+      document.getElementById('otp').disabled = true; // lock OTP after success
+    } else {
+      document.getElementById('msg').innerText = "❌ " + data.msg;
+    }
+  } catch(err){
+    document.getElementById('msg').innerText = "❌ Error connecting to server";
+  }
+}
+</script>
+</body>
+</html>

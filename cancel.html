@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cancel Order | Purevia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  font-family: Arial;
+  background:#f4f9ff;
+  padding:20px;
+}
+input, button{
+  padding:10px;
+  margin:6px 0;
+  width:100%;
+}
+.order{
+  background:#fff;
+  padding:10px;
+  margin-top:10px;
+  border-radius:6px;
+}
+button{
+  background:#e74c3c;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+button:hover{opacity:.9;}
+</style>
+</head>
+
+<body>
+
+<h2>❌ Cancel Your Order</h2>
+
+<input id="email" placeholder="Enter your email">
+<button onclick="sendOtp()">Send OTP</button>
+
+<input id="otp" placeholder="Enter OTP">
+<button onclick="verifyOtp()">Verify OTP</button>
+
+<div id="orders"></div>
+
+<script>
+async function sendOtp(){
+  const email = document.getElementById("email").value;
+  const res = await fetch("/send-cancel-otp",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({email})
+  });
+  alert("OTP sent to your email");
+}
+
+async function verifyOtp(){
+  const email = document.getElementById("email").value;
+  const otp = document.getElementById("otp").value;
+
+  const res = await fetch("/verify-cancel-otp",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({email, otp})
+  });
+
+  const data = await res.json();
+  if(!data.success) return alert(data.msg);
+
+  const div = document.getElementById("orders");
+  div.innerHTML = "<h3>Your Orders</h3>";
+
+  data.orders.forEach((o,i)=>{
+    div.innerHTML += `
+      <div class="order">
+        <p><b>Total:</b> ₹${o.totalPrice}</p>
+        <p><b>Date:</b> ${o.date}</p>
+        <button onclick="deleteOrder('${email}',${i})">
+          Cancel This Order
+        </button>
+      </div>
+    `;
+  });
+}
+
+async function deleteOrder(email,index){
+  if(!confirm("Are you sure?")) return;
+
+  await fetch("/delete-order",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({email,index})
+  });
+
+  alert("Order cancelled successfully");
+  location.reload();
+}
+</script>
+
+</body>
+</html>

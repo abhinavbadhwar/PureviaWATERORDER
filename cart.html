@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Cart | Purevia</title>
+<style>
+/* ================= GENERAL STYLES ================= */
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(to right,#e9fafa,#ffffff);
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* HEADER */
+header{
+  background:#0a7f7f;
+  color:white;
+  padding:18px 25px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:relative;
+  z-index:10;
+}
+
+header::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:100%;
+  width:100%;
+  height:20px;
+  background:radial-gradient(circle at 50% 0%, #0fb9b1 20%, transparent 21%) repeat-x;
+  background-size:40px 20px;
+  z-index:0;
+}
+
+.header-left, .header-center, .header-right{
+  display:flex;
+  align-items:center;
+}
+
+.header-center{
+  flex:1;
+  justify-content:center;
+}
+
+.header-center h1{
+  margin:0;
+  font-size:28px;
+}
+
+.header-center p{
+  margin:0;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+.header-right button{
+  background:white;
+  color:#0a7f7f;
+  padding:8px 15px;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:bold;
+  margin-left:10px;
+  position:relative;
+}
+
+.header-right button::after{
+  content:'🛒';
+  position:absolute;
+  top:-10px;
+  right:-10px;
+  font-size:20px;
+  animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce{
+  from {transform:translateY(0);}
+  to {transform:translateY(-6px);}
+}
+
+/* CONTAINER */
+.container{
+  max-width:700px;
+  margin:40px auto;
+  background:white;
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 15px 30px rgba(0,0,0,0.15);
+  position:relative;
+  overflow:hidden;
+}
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #ddd;
+  padding:15px 0;
+}
+
+.cart-item:last-child{
+  border-bottom:none;
+}
+
+.cart-item strong{
+  color:#0a7f7f;
+}
+
+.remove-btn{
+  background:#e53935;
+  color:white;
+  border:none;
+  padding:6px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.total{
+  margin-top:20px;
+  font-size:20px;
+  font-weight:bold;
+  text-align:right;
+}
+
+label{
+  display:block;
+  margin-top:18px;
+  font-weight:bold;
+}
+
+input, textarea, select{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+
+.place-btn{
+  margin-top:25px;
+  width:100%;
+  padding:14px;
+  font-size:18px;
+  background:#0a7f7f;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  position:relative;
+}
+
+.place-btn:hover{
+  background:#086666;
+}
+
+/* DELIVERY OPTION */
+.delivery-option{
+  margin-top:18px;
+  font-size:16px;
+}
+
+#scheduleFields{
+  display:none;
+  margin-top:10px;
+}
+
+/* PAYMENT SECTION */
+.payment-section{
+  margin-top:30px;
+}
+
+.payment-section label{
+  display:block;
+  margin-top:10px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.payment-section input[type="radio"]{
+  margin-right:10px;
+}
+
+/* POPUPS */
+#cartMessage, #otpModal, #congratsMessage{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#0a7f7f;
+  color:white;
+  font-weight:bold;
+  padding:25px 40px;
+  border-radius:12px;
+  text-align:center;
+  z-index:9999;
+  display:none;
+}
+
+#otpModalContent{
+  background:white;
+  padding:30px 40px;
+  border-radius:12px;
+  text-align:center;
+  max-width:400px;
+  width:90%;
+  color:#0a7f7f;
+}
+
+#otpModalContent input{
+  width:100%;
+  padding:10px;
+  margin:12px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:16px;
+  text-align:center;
+}
+
+#otpModalContent button{
+  padding:12px 20px;
+  background:#0a7f7f;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+#otpModalContent button:hover{
+  background:#095454;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left"><div class="back-btn" onclick="goHome()">⬅ Back</div></div>
+  <div class="header-center">
+    <div><h1>Purevia</h1><p>PURE • SAFE • TRUSTED</p></div>
+  </div>
+  <div class="header-right">
+    <button onclick="goToCart()">🛒 Cart</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div id="cartItems"></div>
+  <div class="total" id="totalPrice">Total: ₹0</div>
+
+  <h2 style="text-align:center; color:#0a7f7f; margin-top:30px;">Delivery Details</h2>
+  <label>Name</label><input id="name" placeholder="Your full name">
+  <label>Email</label><input id="email" placeholder="Enter your email">
+  <label>Mobile</label><input id="mobile" maxlength="10" placeholder="10-digit mobile number">
+  <label>Address</label><textarea id="address" placeholder="Delivery address"></textarea>
+
+  <div class="delivery-option">
+    <label>Delivery Type</label>
+    <select id="deliveryOption" onchange="toggleSchedule()">
+      <option value="normal">Normal Delivery ⛟</option>
+      <option value="schedule">Schedule Delivery ⏰</option>
+    </select>
+  </div>
+
+  <div id="scheduleFields">
+    <label>Select Date</label><input type="date" id="deliveryDate">
+    <label>Select Time</label><input type="time" id="deliveryTime">
+  </div>
+
+  <div class="payment-section">
+    <h2 style="text-align:center; color:#0a7f7f; margin-top:30px;">Payment Method</h2>
+    <label><input type="radio" name="payment" value="upi" checked> UPI / Scanner</label>
+    <label><input type="radio" name="payment" value="cod"> Cash on Delivery (COD)</label>
+  </div>
+
+  <button class="place-btn" onclick="sendOtp()">Place Order</button>
+</div>
+
+<!-- POPUPS -->
+<div id="cartMessage">✅ Item added to cart!</div>
+
+<div id="otpModal">
+  <div id="otpModalContent">
+    <h3>Enter OTP sent to your email</h3>
+    <input id="otpInput" placeholder="Enter OTP">
+    <button onclick="verifyOtp()">Verify OTP</button>
+  </div>
+</div>
+
+<div id="congratsMessage">🎉 Congratulations! Your order is placed! 🎉</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("purevia_cart")) || [];
+  
+  // Display cart items
+  function showCart() {
+  const cartItems = document.getElementById("cartItems");
+  cartItems.innerHTML = "";
+  let total = 0;
+
+  cart.forEach((item, i) => {
+    const itemTotal = Number(item.price) * Number(item.qty);
+    total += itemTotal;
+
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    div.innerHTML = `
+      <span>
+        <strong>${item.name}</strong><br>
+        <small>₹${item.price} per set × ${item.qty} set(s)</small>
+      </span>
+      <span>
+        ₹${itemTotal}
+        <button class="remove-btn" onclick="removeItem(${i})">Remove</button>
+      </span>
+    `;
+    cartItems.appendChild(div);
+  });
+
+  document.getElementById("totalPrice").innerText = "Total: ₹" + total;
+}
+
+  
+  // Remove item
+  function removeItem(i){
+    cart.splice(i,1);
+    localStorage.setItem("purevia_cart", JSON.stringify(cart));
+    showCart();
+  }
+  
+  // Toggle schedule fields
+  function toggleSchedule(){
+    document.getElementById("scheduleFields").style.display = 
+      document.getElementById("deliveryOption").value === "schedule" ? "block" : "none";
+  }
+  
+  // Send OTP
+  function sendOtp(){
+    const email = document.getElementById("email").value.trim();
+    const name = document.getElementById("name").value.trim();
+    if(!email || !name) return alert("Enter name and email");
+  
+    fetch("/send-otp",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({email,name})
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.success){
+        document.getElementById("otpModal").style.display="flex";
+      } else alert("Error sending OTP");
+    });
+  }
+  
+  // Verify OTP & place order
+  function verifyOtp(){
+    const otp = document.getElementById("otpInput").value.trim();
+    if(!otp) return alert("Enter OTP");
+  
+    const order = {
+      name: document.getElementById("name").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      mobile: document.getElementById("mobile").value.trim(),
+      address: document.getElementById("address").value.trim(),
+      delivery: document.getElementById("deliveryOption").value,
+      items: cart,
+      totalPrice: cart.reduce((a,b)=>a + Number(b.price) * Number(b.qty), 0),
+      paymentMethod: document.querySelector('input[name="payment"]:checked').value,
+      otp
+    };
+  
+    fetch("/order",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(order)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.success){
+        document.getElementById("otpModal").style.display="none";
+        document.getElementById("congratsMessage").style.display="block";
+        cart=[];
+        localStorage.setItem("purevia_cart","[]");
+        showCart();
+        setTimeout(()=>document.getElementById("congratsMessage").style.display="none",2500);
+      } else alert(data.msg);
+    });
+  }
+  
+  // Navigation
+  function goHome(){ window.location.href="/"; }
+  function goToCart(){ window.location.href="/cart"; }
+  
+  // Initial render
+  showCart();
+  </script>
+  
+</body>
+</html>

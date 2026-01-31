@@ -2,233 +2,503 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Purevia Water Order</title>
+<title>Purevia Water</title>
+
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #dff5f5, #f7ffff);
+/* ================= GENERAL STYLES ================= */
+body{
   margin:0;
-  padding:0;
+  font-family:Arial, sans-serif;
+  background: linear-gradient(to right,#e9fafa,#ffffff), 
+              url('https://i.ibb.co/2W2W6kz/water-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+body::before {
+  content:'';
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(255,255,255,0.4);
+  z-index:-1;
 }
 
 /* ================= HEADER ================= */
-.main-header {
-  background: linear-gradient(135deg, #0a7f7f, #0fb9b1);
-  color: white;
-  padding: 70px 20px 60px 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+header{
+  background:linear-gradient(135deg,#0a7f7f,#0fb9b1);
+  color:white;
+  padding:22px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
 }
-.main-header::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 70%);
-  animation: floatBg 12s linear infinite;
+
+.header-center{
+  text-align:center;
 }
-@keyframes floatBg {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(50px, 30px); }
-  100% { transform: translate(0, 0); }
+
+.header-center h1{
+  margin:0;
+  font-size:34px;
+  letter-spacing:1px;
 }
-.header-overlay { position: relative; z-index: 2; }
-.brand-name { margin: 0; font-size: 72px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; text-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-.brand-tagline { margin: 12px 0 18px 0; font-size: 22px; font-weight: 600; letter-spacing: 1.5px; }
-.brand-contact { margin: 0; font-size: 16px; font-weight: 500; opacity: 0.95; }
 
-/* ================= QUICK ADD ================= */
-.quick-add { max-width:1000px; margin:40px auto; padding:20px; }
-.quick-add h2 { text-align:center; color:#0a7f7f; margin-bottom:20px; }
-.product-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:20px; }
-.product-card { background:white; padding:25px 20px; border-radius:14px; box-shadow:0 10px 25px rgba(0,0,0,0.12); text-align:center; border-top:6px solid #0a7f7f; transition: transform 0.2s; }
-.product-card:hover { transform: translateY(-5px); }
-.product-card h3 { margin-top:0; color:#0a7f7f; font-size:22px; }
-.product-card p { margin:8px 0; font-size:15px; }
-.product-card .price { font-weight:bold; font-size:17px; color:#086666; }
-.product-card button { margin-top:15px; width:100%; padding:12px; background:#0a7f7f; color:white; border:none; border-radius:8px; cursor:pointer; font-size:16px; }
-.product-card button:hover { background:#086666; }
+.header-center p{
+  margin:4px 0 0;
+  font-size:14px;
+  letter-spacing:3px;
+  opacity:0.95;
+}
 
-/* ================= FORM ================= */
-.container { max-width:650px; margin:50px auto; background:white; padding:35px 30px; border-radius:14px; box-shadow:0 15px 35px rgba(0,0,0,0.18); }
-.container h2 { text-align:center; color:#0a7f7f; margin-bottom:25px; }
-label { display:block; margin-top:15px; font-weight:bold; }
-input, textarea { width:100%; padding:12px; margin-top:6px; border-radius:8px; border:1px solid #ccc; font-size:15px; }
-input:focus, textarea:focus { border-color:#0a7f7f; box-shadow:0 0 5px rgba(10,127,127,0.3); }
+/* ================= LEFT PANEL ================= */
+.left-panel{
+  position:fixed;
+  top:100px;
+  left:0;
+  background: rgba(10,127,127,0.9);
+  padding:20px;
+  border-radius:0 12px 12px 0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  z-index:999;
+}
 
-/* ================= SUMMARY ================= */
-.summary { background:linear-gradient(135deg, #e0f7f7, #c0f0f0); border-left:6px solid #0a7f7f; border-radius:12px; padding:22px; margin-top:30px; }
-.summary h3 { margin-top:0; color:#0a7f7f; }
-.summary p { margin:10px 0; font-size:16px; }
-.summary span { font-weight:bold; color:#086666; }
+.left-panel button{
+  background:white;
+  color:#0a7f7f;
+  border:none;
+  padding:10px 16px;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
 
-/* ================= BUTTON ================= */
-button.main-btn { margin-top:30px; padding:14px; background:#0a7f7f; color:white; border:none; border-radius:10px; cursor:pointer; font-size:17px; width:100%; }
-button.main-btn:hover { background:#086666; }
+.left-panel button:hover{
+  background:#0a7f7f;
+  color:white;
+}
+.header-actions{
+  position:absolute;
+  right:40px;
+  top:22px;
+  display:flex;
+  flex-direction:row;     /* 🔥 force one row */
+  gap:14px;
+  align-items:center;
+  flex-wrap:nowrap;       /* 🔥 no wrapping */
+}
+
+/* Cancel button */
+.cancel-btn{
+  background:white;
+  color:#e74c3c;
+  border:none;
+  padding:10px 18px;
+  border-radius:25px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+  white-space:nowrap;
+}
+
+.cancel-btn:hover{
+  background:#e74c3c;
+  color:white;
+}
+
+/* Cart button */
+.cart-btn{
+  background:white;
+  color:#0a7f7f;
+  padding:10px 18px;
+  border-radius:25px;
+  cursor:pointer;
+  font-weight:bold;
+  white-space:nowrap;
+  transition:0.3s;
+}
+
+.cart-btn:hover{
+  background:#0a7f7f;
+  color:white;
+}
+
+
+
+/* ================= HERO ================= */
+.hero{
+  text-align:center;
+  padding:100px 20px;
+}
+
+.hero h2{
+  font-size:48px;
+  color:#0a7f7f;
+  margin-bottom:20px;
+}
+
+.hero p{
+  max-width:900px;
+  margin:20px auto;
+  font-size:20px;
+  line-height:1.8;
+  color:#333;
+  font-weight:500;
+}
+
+.hero-buttons{
+  margin-top:25px;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+.hero-buttons button{
+  background:#0a7f7f;
+  color:white;
+  border:none;
+  padding:14px 28px;
+  font-size:16px;
+  border-radius:25px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+.hero-buttons button:hover{
+  background:#095454;
+}
+
+.hero-tagline{
+  margin-top:20px;
+  font-size:18px;
+  color:#0a7f7f;
+  font-weight:500;
+  letter-spacing:1px;
+  opacity:0.85;
+}
+
+/* ================= FEATURES ================= */
+.features{
+  max-width:1200px;
+  margin:50px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+  padding:50px 20px;
+  background: linear-gradient(135deg, #e0f7f7, #ffffff);
+  border-radius:20px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.feature{
+  background:white;
+  padding:30px 20px;
+  border-radius:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.15);
+  text-align:center;
+  transition:0.4s;
+  position:relative;
+}
+
+.feature:hover{
+  transform:translateY(-8px);
+  box-shadow:0 15px 30px rgba(0,0,0,0.2);
+}
+
+.feature-icon{
+  font-size:40px;
+  background:linear-gradient(135deg,#0a7f7f,#0fb9b1);
+  color:white;
+  width:80px;
+  height:80px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  margin:0 auto 15px auto;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+  transition:0.3s;
+}
+
+.feature:hover .feature-icon{
+  transform:scale(1.2);
+}
+
+.feature h3{
+  font-size:20px;
+  color:#0a7f7f;
+  margin:10px 0;
+}
+
+.feature p{
+  font-size:15px;
+  color:#444;
+  line-height:1.6;
+  opacity:0.9;
+}
+
+/* ================= PRODUCTS ================= */
+.products{
+  max-width:1100px;
+  margin:60px auto;
+  padding:20px;
+}
+
+.products h2{
+  text-align:center;
+  color:#0a7f7f;
+  margin-bottom:30px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  text-align:center;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card h3{ color:#0a7f7f; }
+
+.card p{
+  font-size:18px;
+  font-weight:bold;
+  color:#0a7f7f;
+}
+
+.card small{
+  display:block;
+  font-size:12px;
+  font-weight:normal;
+  color:#095454;
+  margin-top:4px;
+}
+
+.card button{
+  margin-top:12px;
+  width:100%;
+  padding:12px;
+  background:#0a7f7f;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.card button:hover{
+  background:#095454;
+}
 
 /* ================= FOOTER ================= */
-footer { background:#f2f9f9; padding:25px; text-align:center; margin-top:50px; border-top:1px solid #ddd; color:#0a7f7f; }
+footer{
+  background:#083f3f;
+  color:white;
+  padding:40px 20px;
+  margin-top:60px;
+}
 
+.footer-box{
+  max-width:1100px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+}
+
+footer h3{
+  margin-bottom:10px;
+}
+
+footer p{
+  font-size:14px;
+  line-height:1.6;
+  opacity:0.9;
+}
+
+.footer-bottom{
+  text-align:center;
+  margin-top:30px;
+  font-size:13px;
+  opacity:0.7;
+}
+
+/* ================= POPUP MESSAGE ================= */
+#cartMessage{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#0a7f7f;
+  color:white;
+  padding:25px 40px;
+  font-size:28px;
+  font-weight:bold;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  display:none;
+  z-index:9999;
+}
 </style>
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
-<header class="main-header">
-  <div class="header-overlay">
-    <h1 class="brand-name">Purevia</h1>
-    <p class="brand-tagline">Pure • Safe • Natural Drinking Water</p>
-    <p class="brand-contact">📞 +91 6280943728 &nbsp; | &nbsp; ✉️ support@purevia.com</p>
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <button onclick="scrollToSection('hero')">Home</button>
+  <button onclick="scrollToSection('products')">Products</button>
+  <button onclick="scrollToSection('features')">Features</button>
+  <button onclick="scrollToSection('footer')">Contact</button>
+  <button onclick="goToCart()">🛒 Cart</button>
+  <button onclick="openInstagram()">📸 Instagram</button>
+</div>
+
+<header>
+  <div class="header-center">
+    <h1>Purevia</h1>
+    <p>PURE • SAFE • TRUSTED</p>
+  </div>
+
+  <!-- RIGHT BUTTONS -->
+  <div class="header-actions">
+    <button class="cancel-btn" onclick="window.location.href='/cancel'">
+      ❌ Cancel Order
+    </button>
+    <div class="cart-btn" onclick="goToCart()">🛒 Cart</div>
   </div>
 </header>
 
-<!-- ================= QUICK ADD ================= -->
-<div class="quick-add">
-  <h2>Quick Add Full Sets</h2>
-  <div class="product-grid">
-    <div class="product-card">
-      <h3>200 ml Bottle</h3>
-      <p>Packing: Set of 24</p>
-      <p class="price">Set Price: ₹240</p>
-      <button onclick="quickAdd('200')">Add Set</button>
-    </div>
-    <div class="product-card">
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <h2>Pure & Natural Drinking Water</h2>
+  <p>
+    At Purevia, we deliver high-quality packaged drinking water
+    processed with advanced purification to ensure safety, freshness,
+    and great taste — just like India’s most trusted brands.
+  </p>
+  <div class="hero-buttons">
+    <button onclick="scrollToSection('products')">Order Now</button>
+    <button onclick="scrollToSection('features')">Learn More</button>
+  </div>
+  <p class="hero-tagline">Stay hydrated, stay healthy.</p>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="feature"><div class="feature-icon">💧</div><h3>Advanced Purification</h3><p>RO + UV purification ensuring 100% safe and healthy drinking water.</p></div>
+  <div class="feature"><div class="feature-icon">🚚</div><h3>Fast Doorstep Delivery</h3><p>On-time delivery for homes, offices, events, and businesses.</p></div>
+  <div class="feature"><div class="feature-icon">🛡</div><h3>Quality Certified</h3><p>Hygienically packed bottles that meet safety standards.</p></div>
+  <div class="feature"><div class="feature-icon">♻️</div><h3>Eco-Friendly Packaging</h3><p>Sustainable and recyclable bottles to help protect the environment.</p></div>
+  <div class="feature"><div class="feature-icon">📞</div><h3>24/7 Customer Support</h3><p>Reach out anytime — we are here to help you with your orders.</p></div>
+  <div class="feature"><div class="feature-icon">🗓️</div><h3>Subscription Plans</h3><p>Regular deliveries on a schedule — hassle-free hydration for your home or office.</p></div>
+  <div class="feature"><div class="feature-icon">💡</div><h3>Hydration Tips</h3><p>Learn the best ways to stay hydrated every day.</p></div>
+  <div class="feature"><div class="feature-icon">🏆</div><h3>Trusted by Families</h3><p>Millions of happy customers rely on Purevia for clean drinking water.</p></div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <h2>Choose Your Bottle</h2>
+  <div class="grid">
+    <div class="card">
       <h3>1 L Bottle</h3>
-      <p>Packing: Set of 12</p>
-      <p class="price">Set Price: ₹240</p>
-      <button onclick="quickAdd('1000')">Add Set</button>
+      <p>₹240</p>
+    <p>per set (12 bottles)</p>
+      <button onclick="addToCart('1L Bottle (12 bottles)', 1, 240)">Add to Cart</button>
     </div>
-    <div class="product-card">
+    
+    <div class="card">
+      <h3>200 ml Bottle</h3>
+      <p>₹240 </p>
+      <p>per set (24 bottles)</p>
+      <button onclick="addToCart('200ml Bottle (24 bottles)', 1, 240)">Add to Cart</button>
+    </div>
+    
+    <div class="card">
       <h3>2 L Bottle</h3>
-      <p>Packing: Set of 12</p>
-      <p class="price">Set Price: ₹360</p>
-      <button onclick="quickAdd('2000')">Add Set</button>
+      <p>₹360 </p>
+      <p>per set (12 bottles)</p>
+      <button onclick="addToCart('2L Bottle (12 bottles)', 1, 360)">Add to Cart</button>
     </div>
-    <div class="product-card">
+    
+    <div class="card">
       <h3>5 L Bottle</h3>
-      <p>Packing: Single Bottle</p>
-      <p class="price">Price: ₹80</p>
-      <button onclick="quickAdd('5000')">Add</button>
+      <p>₹80 </p>
+      <p>per bottle</p>
+      <button onclick="addToCart('5L Bottle', 1, 80)">Add to Cart</button>
     </div>
+    </div>    
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-box">
+    <div><h3>About Purevia</h3><p>Purevia is a packaged drinking water brand committed to delivering safe, hygienic, and refreshing water for everyday needs.</p></div>
+    <div><h3>Contact Us</h3><p>📞 Phone: +91 6280943728<br>📧 Email: pureviaorders@gmail.com<br>📍 Location: Chamkaur Sahib ,Punjab</p></div>
+    <div><h3>Why Choose Us</h3><p>Trusted quality, affordable pricing, fast delivery, and customer satisfaction.</p></div>
   </div>
-</div>
-
-<!-- ================= ORDER FORM ================= -->
-<div class="container">
-  <h2>Order Summary</h2>
-
-  <label>Your Name</label>
-  <input type="text" id="name" placeholder="Enter your full name">
-
-  <label>Selected Size</label>
-  <input type="text" id="bottleSize" readonly>
-
-  <label>Mobile Number</label>
-  <input type="tel" id="mobile" placeholder="10-digit mobile number" maxlength="10">
-
-  <label>Delivery Address</label>
-  <textarea id="address" placeholder="Enter full address"></textarea>
-
-  <div class="summary">
-    <h3>Order Details</h3>
-    <p>👤 Name: <span id="summaryName">-</span></p>
-    <p>📏 Size: <span id="summarySize">-</span></p>
-    <p>📦 Total Bottles: <span id="summaryQty">0</span></p>
-    <p>💰 Total Price: <span id="summaryPrice">₹0</span></p>
-  </div>
-
-  <button class="main-btn" onclick="placeOrder()">Place Order</button>
-</div>
-
-<footer>
-  <p>Purevia Water Pvt. Ltd., Chamkaur Sahib, Ropar, Punjab, India</p>
+  <div class="footer-bottom">©️ 2026 Purevia Water. All Rights Reserved.</div>
 </footer>
 
+<!-- POPUP MESSAGE -->
+<div id="cartMessage">✅ Item added to cart!</div>
+
+<!-- ================= ADD JS ================= -->
 <script>
-let totalQuantity = 0;
-let totalPrice = 0;
-let currentSize = "";
-
-function quickAdd(size) {
-  // Reset if changing bottle type
-  if(currentSize !== size) {
-    currentSize = size;
-    totalQuantity = 0;
-    totalPrice = 0;
+  let cart = JSON.parse(localStorage.getItem("purevia_cart")) || [];
+  
+  // Show cart message when item is added
+  function addToCart(name, qty, price){
+    qty = Number(qty);
+    price = Number(price);
+  
+    const existing = cart.find(item => item.name === name);
+    if(existing){
+      existing.qty += qty;
+    } else {
+      cart.push({name, qty, price});
+    }
+  
+    localStorage.setItem("purevia_cart", JSON.stringify(cart));
+  
+    // Show popup message
+    const msg = document.getElementById("cartMessage");
+    msg.style.display="block";
+    setTimeout(()=>msg.style.display="none",1500);
   }
-
-  let bottlesPerSet = 0;
-  let pricePerSet = 0;
-  let sizeText = "";
-
-  if(size === "200") { bottlesPerSet = 24; pricePerSet = 240; sizeText = "200 ml"; }
-  else if(size === "1000") { bottlesPerSet = 12; pricePerSet = 240; sizeText = "1 L"; }
-  else if(size === "2000") { bottlesPerSet = 12; pricePerSet = 360; sizeText = "2 L"; }
-  else if(size === "5000") { bottlesPerSet = 1; pricePerSet = 80; sizeText = "5 L"; }
-
-  totalQuantity += bottlesPerSet;
-  totalPrice += pricePerSet;
-
-  document.getElementById("bottleSize").value = sizeText;
-  updateSummary();
-
-  document.querySelector(".container").scrollIntoView({ behavior: "smooth" });
-}
-
-function updateSummary() {
-  const name = document.getElementById("name").value.trim();
-  document.getElementById("summaryName").innerText = name || "-";
-  document.getElementById("summarySize").innerText = document.getElementById("bottleSize").value || "-";
-  document.getElementById("summaryQty").innerText = totalQuantity;
-  document.getElementById("summaryPrice").innerText = "₹" + totalPrice;
-}
-
-function placeOrder() {
-  const name = document.getElementById("name").value.trim();
-  const mobile = document.getElementById("mobile").value.trim();
-  const address = document.getElementById("address").value.trim();
-
-  if(!name || !mobile || !address || totalQuantity === 0){
-    alert("Please fill all details and add bottles.");
-    return;
+  
+  // Scroll functions
+  function scrollToSection(id){
+    document.getElementById(id).scrollIntoView({behavior:"smooth"});
   }
+  
+  function goToCart(){
+    window.location.href="/cart";
+  }
+  
+  function openInstagram(){
+    window.open("https://instagram.com","_blank");
+  }
+  </script>
+  
 
-  fetch("/order", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      name: name,
-      mobile: "+91" + mobile,
-      size: document.getElementById("bottleSize").value,
-      totalBottles: totalQuantity,
-      totalPrice: totalPrice,
-      delivery: "normal",
-      address: address,
-      notes: ""
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if(data.success){
-      alert("✅ Order placed & email sent successfully!");
-      totalQuantity = 0;
-      totalPrice = 0;
-      currentSize = "";
-      document.getElementById("name").value = "";
-      document.getElementById("mobile").value = "";
-      document.getElementById("address").value = "";
-      document.getElementById("bottleSize").value = "";
-      updateSummary();
-    } else alert("❌ Error sending email: " + (data.error || "Unknown error"));
-  })
-  .catch(err => alert("❌ Error: " + err));
-}
-
-document.getElementById("name").addEventListener("input", updateSummary);
-</script>
 </body>
 </html>
